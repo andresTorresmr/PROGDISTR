@@ -18,7 +18,7 @@ namespace PIA_PROG.data.Repositories
         {
             return new MySqlConnection(_connectionString.ConnectionString);
         }
-
+         
         public async Task<bool> DeleteProduct(int id)
         {
             var db = dbConnection();

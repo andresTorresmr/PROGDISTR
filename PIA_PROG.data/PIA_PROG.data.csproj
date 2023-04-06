@@ -10,9 +10,6 @@
     <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PIA_PROG.model\PIA_PROG.model.csproj" />
   </ItemGroup>
   <ItemGroup>

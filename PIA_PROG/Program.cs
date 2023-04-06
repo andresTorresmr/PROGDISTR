@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 var mySQLConfig = new MySqlConfiguration(builder.Configuration.GetConnectionString("MySqlConnection"));
 builder.Services.AddSingleton(mySQLConfig);
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-      
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
