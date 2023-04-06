@@ -41,7 +41,7 @@ namespace PIA_PROG.data.Repositories
         public async Task<IEnumerable<Product>> GetDetails(int id)
         {
             var db = dbConnection();
-
+            var asas = "";
             var sql = @"CALL PRODUCT_DETAILS(@idProduct)";
             
             return await db.QueryAsync<Product>(sql, new { idProduct = id });
