@@ -1,0 +1,12 @@
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/bin/Debug/net6.0/PIA_PROG.model.deps.json
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/bin/Debug/net6.0/PIA_PROG.model.dll
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/bin/Debug/net6.0/PIA_PROG.model.pdb
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.csproj.AssemblyReference.cache
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.GeneratedMSBuildEditorConfig.editorconfig
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.AssemblyInfoInputs.cache
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.AssemblyInfo.cs
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.csproj.CoreCompileInputs.cache
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.dll
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/refint/PIA_PROG.model.dll
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/PIA_PROG.model.pdb
+/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/Debug/net6.0/ref/PIA_PROG.model.dll
