@@ -13,7 +13,7 @@ namespace PIA_PROG.data.Repositories
         Task<IEnumerable<Brand>> GetBrandDetails(int id);
 
 
-        Task<bool> InsertBrand(BrandIns brand);
+        Task<IEnumerable<Brand>> InsertBrand(BrandIns brand);
         Task<bool> UpdateBrand(int id, Brand brand);
         Task<bool> DeleteBrand(int id);
     }

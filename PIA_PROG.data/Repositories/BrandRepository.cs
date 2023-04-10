@@ -39,13 +39,15 @@ namespace PIA_PROG.data.Repositories
             return await db.QueryAsync<Brand>(sql, new { idBrand_P = id });
         }
 
-        public async Task<bool> InsertBrand(BrandIns brand)
+        public async Task<IEnumerable<Brand>> InsertBrand(BrandIns brand)
         {
             var db = dbConnection();
-
+            
             var sql = @"CALL INSERT_BRAND(@name)";
-            var result = await db.ExecuteAsync(sql, new { brand.name});
-            return result > 0;
+            return await db.QueryAsync<Brand>(sql, new { brand.name });
+
+            //var result = await db.ExecuteAsync(sql, new { brand.name});
+            //return result > 0;
         }
 
         public async Task<bool> UpdateBrand(int id, Brand brand)
