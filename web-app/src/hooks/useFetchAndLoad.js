@@ -10,12 +10,14 @@ const useFetchAndLoad = () => {
     setLoading(true);
 
     let result = {};
+
     try {
       result = await axiosCall.call;
     } catch (error) {
       setLoading(false);
       throw error;
     }
+
     setLoading(false);
     return result;
   };

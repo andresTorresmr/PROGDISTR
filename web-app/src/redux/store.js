@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { brands } from "./states";
+import { brands, products } from "./states";
 
 export const store = configureStore({
   reducer: {
     brands,
+    products,
   },
 });

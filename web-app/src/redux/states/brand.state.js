@@ -19,9 +19,18 @@ export const userSlice = createSlice({
         state.splice(state.indexOf(findBrand), 1);
       }
     },
+    updateBrand: (state, action) => {
+      const findBrand = state.find((Brand) => Brand.id === action.payload.id);
+
+      if (findBrand) {
+        let index = state.indexOf(findBrand);
+        state[index] = action.payload;
+      }
+    },
   },
 });
 
-export const { setBrand, setBrandState, deleteBrand } = userSlice.actions;
+export const { setBrand, setBrandState, deleteBrand, updateBrand } =
+  userSlice.actions;
 
 export default userSlice.reducer;

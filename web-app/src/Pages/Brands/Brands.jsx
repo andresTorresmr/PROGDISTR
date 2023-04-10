@@ -18,12 +18,16 @@ import AddBrandModal from "./Modals/AddBrandModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setBrandState } from "../../redux/states/brand.state";
 import UpdateBrandModal from "./Modals/UpdateBrandModal";
+import DeleteBrandModal from "./Modals/DeleteBrandModal";
 
 const Brands = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
-  const [id, setId] = useState(0);
+  const [brand, setbrand] = useState({});
+  const [id, setId] = useState("");
   const [open, setOpen] = useState(false);
+  const [brand_status, setBrand_status] = React.useState("");
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const brands_item = useSelector((state) => state.brands);
   const dispatch = useDispatch();
 
@@ -47,16 +51,37 @@ const Brands = () => {
     }
   };
 
-  const handleUpdate = async (id) => {
-    setId(id);
+  const handleUpdate = async (id, name, status) => {
+    let data;
+    data = {
+      id,
+      name,
+      status,
+    };
+    setbrand(data);
+    setBrand_status(status);
+    console.log(status);
     setOpenUpdate(true);
   };
+
+  const handleDelete = async (id) => {
+    setId(id);
+    setOpenDelete(true);
+  };
+
   return (
     <>
       <AddBrandModal open={open} setOpen={setOpen} />
       <UpdateBrandModal
         openUpdate={openUpdate}
         setOpenUpdate={setOpenUpdate}
+        brand={brand}
+        brand_status={brand_status}
+        setBrand_status={setBrand_status}
+      />
+      <DeleteBrandModal
+        openDelete={openDelete}
+        setOpenDelete={setOpenDelete}
         id={id}
       />
       <Typography variant="h3" component="h1" className="text-center my-5 ">
@@ -70,7 +95,7 @@ const Brands = () => {
       >
         Agregar marca
       </Button>
-      {loading && brands_item.length > 0 ? (
+      {loading && brands_item ? (
         <Loading />
       ) : (
         <TableContainer component={Paper}>
@@ -103,11 +128,16 @@ const Brands = () => {
                   <TableCell align="center">
                     <IconButton
                       aria-label="update"
-                      onClick={() => handleUpdate(brand.id)}
+                      onClick={() =>
+                        handleUpdate(brand.id, brand.name, brand.status)
+                      }
                     >
                       <EditIcon className=" hover:text-yellow-400 text-slate-600" />
                     </IconButton>
-                    <IconButton aria-label="delete">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDelete(brand.id)}
+                    >
                       <DeleteIcon className=" hover:text-red-500 text-slate-600" />
                     </IconButton>
                   </TableCell>

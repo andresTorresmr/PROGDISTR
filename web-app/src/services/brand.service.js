@@ -23,3 +23,24 @@ export const insert_brand = (data) => {
     controller,
   };
 };
+
+export const update_brand = (data, id) => {
+  const controller = loadAbort();
+
+  return {
+    call: server.put(`Brand/update/${id}`, data, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
+export const delete_brand = (id) => {
+  const controller = loadAbort();
+  return {
+    call: server.delete(`Brand/delete/${id}`, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
