@@ -21,7 +21,7 @@ import UpdateBrandModal from "./Modals/UpdateBrandModal";
 
 const Brands = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
-  //const [brands_item, setBrands] = useState([]);
+  const [id, setId] = useState(0);
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const brands_item = useSelector((state) => state.brands);
@@ -46,10 +46,19 @@ const Brands = () => {
       console.log(error);
     }
   };
+
+  const handleUpdate = async (id) => {
+    setId(id);
+    setOpenUpdate(true);
+  };
   return (
     <>
       <AddBrandModal open={open} setOpen={setOpen} />
-      <UpdateBrandModal openUpdate={openUpdate} setOpenUpdate={setOpenUpdate} />
+      <UpdateBrandModal
+        openUpdate={openUpdate}
+        setOpenUpdate={setOpenUpdate}
+        id={id}
+      />
       <Typography variant="h3" component="h1" className="text-center my-5 ">
         Marcas
       </Typography>
@@ -93,8 +102,8 @@ const Brands = () => {
                   </TableCell>
                   <TableCell align="center">
                     <IconButton
-                      aria-label="delete"
-                      onClick={() => setOpen(true)}
+                      aria-label="update"
+                      onClick={() => handleUpdate(brand.id)}
                     >
                       <EditIcon className=" hover:text-yellow-400 text-slate-600" />
                     </IconButton>

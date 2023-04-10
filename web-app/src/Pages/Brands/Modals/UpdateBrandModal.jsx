@@ -6,17 +6,48 @@ import {
   MenuItem,
   Modal,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useRef } from "react";
 
-const UpdateBrandModal = ({ openUpdate, setopenUpdate }) => {
-  const [status, setStatus] = React.useState("");
+const UpdateBrandModal = ({ id, openUpdate, setOpenUpdate }) => {
+  const [brand_status, setBrand_status] = React.useState("");
+  const name = useRef();
 
   const handleChange = (event) => {
-    setStatus(event.target.value);
+    setBrand_status(event.target.value);
+    console.log(event.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    let brand;
+    e.preventDefault();
+    brand = {
+      id,
+      name: name.current.value,
+      status: brand_status,
+    };
+    try {
+      console.log(brand);
+      // const { data } = await callEndpoint(insert_brand(brand));
+
+      // dispatch(setBrand(brandAdapter(data[0])));
+      // enqueueSnackbar("Marca agregada exitosamente.", {
+      //   anchorOrigin: { vertical: "top", horizontal: "right" },
+      //   variant: "success",
+      //   autoHideDuration: 2000,
+      // });
+      // setOpen(false);
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    }
   };
 
   const style = {
@@ -35,8 +66,11 @@ const UpdateBrandModal = ({ openUpdate, setopenUpdate }) => {
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      open={open}
-      onClose={() => setOpen(false)}
+      open={openUpdate}
+      onClose={() => {
+        setOpenUpdate(false);
+        setBrand_status("");
+      }}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{
@@ -45,24 +79,32 @@ const UpdateBrandModal = ({ openUpdate, setopenUpdate }) => {
         },
       }}
     >
-      <Fade in={open}>
-        <Box sx={style} component="form">
+      <Fade in={openUpdate}>
+        <Box sx={style}>
           <Typography
             id="transition-modal-title"
             variant="h6"
             sx={{ textAlign: "center" }}
             component="h2"
           >
-            Agregar usuario
+            Actualizar marca
           </Typography>
 
-          <Box>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <Box component="form" onSubmit={handleSubmit}>
+            <FormControl sx={{ mt: 3, mb: 2, minWidth: "100%" }} size="medium">
+              <TextField
+                id="outlined-basic"
+                label="Nombre"
+                variant="outlined"
+                inputRef={name}
+              />
+            </FormControl>
+            <FormControl sx={{ mb: 2, minWidth: "100%" }} size="small">
               <InputLabel id="status">Status</InputLabel>
               <Select
                 labelId="status"
                 id="status"
-                value={status}
+                value={brand_status}
                 label="status"
                 onChange={handleChange}
               >
@@ -70,6 +112,9 @@ const UpdateBrandModal = ({ openUpdate, setopenUpdate }) => {
                 <MenuItem value={2}>Inactivo</MenuItem>
               </Select>
             </FormControl>
+            <Button variant="contained" sx={{ width: "100%" }} type="submit">
+              Guardar
+            </Button>
           </Box>
         </Box>
       </Fade>
