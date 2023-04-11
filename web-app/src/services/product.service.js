@@ -17,7 +17,30 @@ export const insert_product = (data) => {
   const controller = loadAbort();
 
   return {
-    call: server.post("Product/insert/", data, {
+    call: server.post("Product/insert", data, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
+export const update_product = (data, id) => {
+  const controller = loadAbort();
+
+  return {
+    call: server.put(`Product/update/${id}`, data, {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
+export const delete_product = (id) => {
+  console.log(id);
+  const controller = loadAbort();
+
+  return {
+    call: server.delete(`Product/delete/${id}`, {
       signal: controller.signal,
     }),
     controller,

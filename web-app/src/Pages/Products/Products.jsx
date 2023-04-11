@@ -17,18 +17,19 @@ import { Button, IconButton, Typography } from "@mui/material";
 import AddProductModal from "./Modals/AddProductModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setBrandState } from "../../redux/states/brand.state";
-import UpdateBrandModal from "./Modals/UpdateBrandModal";
-import DeleteBrandModal from "./Modals/DeleteBrandModal";
+import UpdateProductModal from "./Modals/UpdateProductModal";
+import DeleteProductModal from "./Modals/DeleteProductModal";
 import { setProductState } from "../../redux/states/product.state";
 
 const Products = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
-  const [brand, setbrand] = useState({});
+  const [product, setProduct] = useState({});
   const [id, setId] = useState("");
   const [open, setOpen] = useState(false);
-  const [brand_status, setBrand_status] = React.useState("");
+  const [status, setStatus] = React.useState("");
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [brandValue, setBrandValue] = React.useState("");
   const products_item = useSelector((state) => state.products);
   const [brands, setBrands] = useState([]);
   const dispatch = useDispatch();
@@ -54,31 +55,28 @@ const Products = () => {
       products.map((product, index) => {
         products[index] = productAdapter(product);
       });
-      console.log(products);
+
       dispatch(setProductState(products));
 
       brands = brands.filter((item) => item.status == 1);
-      console.log(brands);
+
       setBrands(brands);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleUpdate = async (id, name, status) => {
+  const handleUpdate = async (product) => {
     let data;
-    data = {
-      id,
-      name,
-      status,
-    };
-    setbrand(data);
-    setBrand_status(status);
-    console.log(status);
+    data = product;
+    setProduct(data);
+    setStatus(data.status);
+    setBrandValue(data.brand.id);
     setOpenUpdate(true);
   };
 
   const handleDelete = async (id) => {
+    // console.log(id);
     setId(id);
     setOpenDelete(true);
   };
@@ -86,14 +84,17 @@ const Products = () => {
   return (
     <>
       <AddProductModal open={open} setOpen={setOpen} brands={brands} />
-      <UpdateBrandModal
+      <UpdateProductModal
+        brands={brands}
         openUpdate={openUpdate}
         setOpenUpdate={setOpenUpdate}
-        brand={brand}
-        brand_status={brand_status}
-        setBrand_status={setBrand_status}
+        product={product}
+        status={status}
+        setStatus={setStatus}
+        brandValue={brandValue}
+        setBrandValue={setBrandValue}
       />
-      <DeleteBrandModal
+      <DeleteProductModal
         openDelete={openDelete}
         setOpenDelete={setOpenDelete}
         id={id}
@@ -148,9 +149,7 @@ const Products = () => {
                   <TableCell align="center">
                     <IconButton
                       aria-label="update"
-                      onClick={() =>
-                        handleUpdate(product.id, product.name, product.status)
-                      }
+                      onClick={() => handleUpdate(product)}
                     >
                       <EditIcon className=" hover:text-yellow-400 text-slate-600" />
                     </IconButton>

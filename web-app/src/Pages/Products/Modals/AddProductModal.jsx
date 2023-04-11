@@ -29,14 +29,19 @@ const AddProductModal = ({ open, setOpen, brands }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    let Product;
+    let product_data;
     e.preventDefault();
-    Product = {
+    product_data = {
       name: name.current.value,
+      idBrand: brandValue,
+      stock: stock.current.value,
+      unitPrice: unitPrice.current.value,
+      status: 1,
     };
     try {
-      const { data } = await callEndpoint(insert_Product(Product));
-
+      console.log(product_data);
+      const { data } = await callEndpoint(insert_product(product_data));
+      console.log(productAdapter(data[0]));
       dispatch(setProduct(productAdapter(data[0])));
       enqueueSnackbar("Marca agregada exitosamente.", {
         anchorOrigin: { vertical: "top", horizontal: "right" },
@@ -47,7 +52,7 @@ const AddProductModal = ({ open, setOpen, brands }) => {
     } catch (error) {
       enqueueSnackbar(error.message, {
         anchorOrigin: { vertical: "top", horizontal: "right" },
-        variant: "success",
+        variant: "error",
         autoHideDuration: 2000,
       });
     }
@@ -142,13 +147,7 @@ const AddProductModal = ({ open, setOpen, brands }) => {
               </FormControl>
             </Box>
 
-            <Button
-              variant="contained"
-              sx={{ width: "100%" }}
-              /*type="submit"*/ onClick={() =>
-                brands.map((brand) => console.log(brand))
-              }
-            >
+            <Button variant="contained" sx={{ width: "100%" }} type="submit">
               Guardar
             </Button>
           </Box>

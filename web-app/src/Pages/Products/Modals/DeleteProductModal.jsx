@@ -1,37 +1,22 @@
-import {
-  Button,
-  Fade,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Modal, Typography, Button, Fade } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import { Box } from "@mui/system";
-import React, { useRef } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteBrand, updateBrand } from "../../../redux/states/brand.state";
 import { useSnackbar } from "notistack";
-import { delete_brand } from "../../../services";
+import { delete_product } from "../../../services";
 import { useFetchAndLoad } from "../../../hooks";
+import { deleteProduct } from "../../../redux/states/product.state";
 
-const DeleteBrandModal = ({ id, openDelete, setOpenDelete }) => {
+const DeleteProductModal = ({ id, openDelete, setOpenDelete }) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { loading, callEndpoint } = useFetchAndLoad();
-  const [brand_status, setBrand_status] = React.useState("");
-
-  const handleChange = (event) => {
-    setBrand_status(event.target.value);
-  };
 
   const handleDelete = async () => {
     try {
-      dispatch(deleteBrand(id));
-      const response = await callEndpoint(delete_brand(id));
+      dispatch(deleteProduct(id));
+      const response = await callEndpoint(delete_product(id));
       if (response.status == 200) {
         enqueueSnackbar("Registro eliminado exitosamente.", {
           anchorOrigin: { vertical: "top", horizontal: "right" },
@@ -70,7 +55,6 @@ const DeleteBrandModal = ({ id, openDelete, setOpenDelete }) => {
       open={openDelete}
       onClose={() => {
         setOpenDelete(false);
-        setBrand_status("");
       }}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
@@ -117,4 +101,4 @@ const DeleteBrandModal = ({ id, openDelete, setOpenDelete }) => {
   );
 };
 
-export default DeleteBrandModal;
+export default DeleteProductModal;
