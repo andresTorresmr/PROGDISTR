@@ -22,6 +22,8 @@ var mySQLConfig = new MySqlConfiguration(builder.Configuration.GetConnectionStri
 builder.Services.AddSingleton(mySQLConfig);
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IMethodRepository, MethodRepository>();
+builder.Services.AddScoped<ISellRepository, SellRepository>();
 
 var app = builder.Build();
 

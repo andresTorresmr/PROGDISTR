@@ -39,11 +39,11 @@ const AddProductModal = ({ open, setOpen, brands }) => {
       status: 1,
     };
     try {
-      console.log(product_data);
+      // console.log(product_data);
       const { data } = await callEndpoint(insert_product(product_data));
-      console.log(productAdapter(data[0]));
       dispatch(setProduct(productAdapter(data[0])));
-      enqueueSnackbar("Marca agregada exitosamente.", {
+
+      enqueueSnackbar("Producto agregado exitosamente.", {
         anchorOrigin: { vertical: "top", horizontal: "right" },
         variant: "success",
         autoHideDuration: 2000,

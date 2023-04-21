@@ -13,12 +13,13 @@ import { useFetchAndLoad } from "../../hooks";
 import { get_brands } from "../../services";
 import Loading from "../Loading/Loading";
 import { brandAdapter } from "../../adapters";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import AddBrandModal from "./Modals/AddBrandModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setBrandState } from "../../redux/states/brand.state";
 import UpdateBrandModal from "./Modals/UpdateBrandModal";
 import DeleteBrandModal from "./Modals/DeleteBrandModal";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Brands = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -28,8 +29,14 @@ const Brands = () => {
   const [brand_status, setBrand_status] = React.useState("");
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const brands_item = useSelector((state) => state.brands);
   const dispatch = useDispatch();
+  const brands_state = useSelector((state) => state.brands);
+  // BUSCADOR
+  const [brand_search, setBrandSearch] = useState(
+    useSelector((state) => state.brands)
+  );
+  const [brandTable, setBrandTable] = useState(brands_state);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     handleCharge();
@@ -46,9 +53,13 @@ const Brands = () => {
         brands[index] = brandAdapter(brand);
       });
       dispatch(setBrandState(brands));
+
+      // setBrandSearch(brands);
+      // setBrandTable(brands);
     } catch (error) {
       console.log(error);
     }
+    //console.log(brands_item);
   };
 
   const handleUpdate = async (id, name, status) => {
@@ -60,13 +71,33 @@ const Brands = () => {
     };
     setbrand(data);
     setBrand_status(status);
-    console.log(status);
+    //console.log(status);
     setOpenUpdate(true);
   };
 
   const handleDelete = async (id) => {
     setId(id);
     setOpenDelete(true);
+  };
+
+  const handleChange = (e) => {
+    //console.log(e.target.value);
+    setSearch(e.target.value);
+
+    filter(e.target.value);
+
+    //console.log(brand_search);
+  };
+  const filter = (searchTerm) => {
+    var searchResult = brandTable.filter((element) => {
+      if (
+        element.name.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return element;
+      }
+    });
+
+    setBrandSearch(searchResult);
   };
 
   return (
@@ -87,15 +118,26 @@ const Brands = () => {
       <Typography variant="h3" component="h1" className="text-center my-5 ">
         Marcas
       </Typography>
-      <Button
-        variant="contained"
-        className="mt-5 mb-8 bg-slate-700 "
-        endIcon={<AddCircleIcon />}
-        onClick={() => setOpen(true)}
-      >
-        Agregar marca
-      </Button>
-      {loading && brands_item ? (
+      <Box className="flex items-center justify-between mx-10">
+        <Button
+          variant="contained"
+          className="mt-5 mb-8 bg-slate-700 "
+          endIcon={<AddCircleIcon />}
+          onClick={() => setOpen(true)}
+        >
+          Agregar marca
+        </Button>
+        <Box className="hidden items-end  h-[30px] mb-2 text-slate-700 ">
+          <SearchIcon sx={{ mr: 1, my: 0.5 }} />
+          <TextField
+            id="input-with-sx"
+            label="Buscar"
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Box>
+      </Box>
+      {loading && brand_search ? (
         <Loading />
       ) : (
         <TableContainer component={Paper}>
@@ -109,7 +151,7 @@ const Brands = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {brands_item.map((brand) => (
+              {brands_state.map((brand) => (
                 <TableRow
                   key={brand.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

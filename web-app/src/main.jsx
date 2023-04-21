@@ -20,6 +20,8 @@ import Products from "./Pages/Products/Products";
 import Brands from "./Pages/Brands/Brands";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import Method from "./Pages/Method/Method";
+import Sells from "./Pages/Sells/Sells";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/ventas",
-        element: <h1>ventas</h1>,
+        element: <Sells />,
+      },
+      {
+        path: "/plataformas",
+        element: <Method />,
       },
     ],
   },
@@ -44,12 +50,11 @@ const router = createBrowserRouter([
 
 const theme = createTheme({
   palette: {
-    mode: "light",
     primary: {
       main: "#334155",
     },
     secondary: {
-      main: "#e8de17",
+      main: "#f59e0b",
     },
     error: {
       main: "#e40000",

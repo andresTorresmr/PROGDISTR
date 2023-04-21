@@ -35,6 +35,11 @@ const navLinks = [
     path: "ventas",
     icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
   },
+  {
+    title: "Plataformas",
+    path: "plataformas",
+    icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
+  },
 ];
 
 function App() {
@@ -52,7 +57,11 @@ function App() {
           >
             <MenuIcon />
           </IconButton>
-
+          <img
+            src="../src/assets/logo.png"
+            alt="logo"
+            className="h-8 w-8 mr-5"
+          />
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Herramientas Quiroz
           </Typography>

@@ -52,7 +52,7 @@ namespace PIA_PROG.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var created = await _productRepository.InsertProduct(product);
+            var created = await _productRepository.InsertProduct( product);
             return Created("created", created);
 
 

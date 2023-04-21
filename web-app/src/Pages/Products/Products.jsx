@@ -13,12 +13,12 @@ import { useFetchAndLoad } from "../../hooks";
 import { get_brands, get_products } from "../../services";
 import Loading from "../Loading/Loading";
 import { brandAdapter, productAdapter } from "../../adapters";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import AddProductModal from "./Modals/AddProductModal";
 import { useDispatch, useSelector } from "react-redux";
-import { setBrandState } from "../../redux/states/brand.state";
 import UpdateProductModal from "./Modals/UpdateProductModal";
 import DeleteProductModal from "./Modals/DeleteProductModal";
+import SearchIcon from "@mui/icons-material/Search";
 import { setProductState } from "../../redux/states/product.state";
 
 const Products = () => {
@@ -31,12 +31,16 @@ const Products = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [brandValue, setBrandValue] = React.useState("");
   const products_item = useSelector((state) => state.products);
+  const [product_search, setProductSearch] = useState(
+    useSelector((state) => state.products)
+  );
+  const [productTable, setProductTable] = useState([]);
+  const [search, setSearch] = useState("");
   const [brands, setBrands] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
     handleCharge();
-    //console.log(products_item);
   }, []);
 
   const handleCharge = async () => {
@@ -57,6 +61,8 @@ const Products = () => {
       });
 
       dispatch(setProductState(products));
+      setProductSearch(products);
+      setProductTable(products);
 
       brands = brands.filter((item) => item.status == 1);
 
@@ -81,6 +87,29 @@ const Products = () => {
     setOpenDelete(true);
   };
 
+  const handleChange = (e) => {
+    //console.log(products_item);
+    setSearch(e.target.value);
+    filter(e.target.value);
+    //console//.log(product_search);
+  };
+  const filter = (searchTerm) => {
+    var searchResult = productTable.filter((element) => {
+      if (
+        element.name
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        element.brand.name
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      ) {
+        return element;
+      }
+    });
+    setProductSearch(searchResult);
+  };
   return (
     <>
       <AddProductModal open={open} setOpen={setOpen} brands={brands} />
@@ -102,14 +131,25 @@ const Products = () => {
       <Typography variant="h3" component="h1" className="text-center my-5 ">
         Productos
       </Typography>
-      <Button
-        variant="contained"
-        className="mt-5 mb-8 bg-slate-700 "
-        endIcon={<AddCircleIcon />}
-        onClick={() => setOpen(true)}
-      >
-        Agregar producto
-      </Button>
+      <Box className="flex items-center justify-between mx-10">
+        <Button
+          variant="contained"
+          className="mt-5 mb-8 bg-slate-700 "
+          endIcon={<AddCircleIcon />}
+          onClick={() => setOpen(true)}
+        >
+          Agregar producto
+        </Button>
+        <Box className=" items-end  h-[30px] mb-2 text-slate-700 hidden">
+          <SearchIcon sx={{ mr: 1, my: 0.5 }} />
+          <TextField
+            id="searchProduct"
+            label="Buscar"
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Box>
+      </Box>
       {loading && products_item ? (
         <Loading />
       ) : (
@@ -137,7 +177,13 @@ const Products = () => {
                   </TableCell>
                   <TableCell align="center">{product.name}</TableCell>
                   <TableCell align="center">{product.brand.name}</TableCell>
-                  <TableCell align="center">${product.stock}</TableCell>
+                  <TableCell align="center">
+                    {product.stock == 0 ? (
+                      <span>Sin stock</span>
+                    ) : (
+                      <span>{product.stock}</span>
+                    )}
+                  </TableCell>
                   <TableCell align="center">${product.unitPrice}</TableCell>
                   <TableCell align="center">
                     {product.status == 1 ? (

@@ -7,6 +7,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setProduct: (state, action) => {
+      console.log(action.payload);
       return [...state, { ...action.payload }];
     },
 
