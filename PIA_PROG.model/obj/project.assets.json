@@ -8,26 +8,24 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\andre\\.nuget\\packages\\": {}
+    "/Users/andrestorres/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\andre\\Desktop\\PIA\\PIA_PROG.model\\PIA_PROG.model.csproj",
+      "projectUniqueName": "/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/PIA_PROG.model.csproj",
       "projectName": "PIA_PROG.model",
-      "projectPath": "C:\\Users\\andre\\Desktop\\PIA\\PIA_PROG.model\\PIA_PROG.model.csproj",
-      "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\andre\\Desktop\\PIA\\PIA_PROG.model\\obj\\",
+      "projectPath": "/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/PIA_PROG.model.csproj",
+      "packagesPath": "/Users/andrestorres/.nuget/packages/",
+      "outputPath": "/Users/andrestorres/Projects/PIA_PROG/PIA_PROG.model/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/andrestorres/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -61,7 +59,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
       }
     }
   }
