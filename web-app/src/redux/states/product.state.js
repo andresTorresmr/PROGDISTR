@@ -29,8 +29,6 @@ export const userSlice = createSlice({
       console.log(action.payload.id);
       if (findProduct) {
         let index = state.indexOf(findProduct);
-        console.log(state[index]);
-        console.log(action.payload);
 
         state[index] = action.payload;
       }

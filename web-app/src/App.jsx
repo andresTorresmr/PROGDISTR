@@ -44,6 +44,11 @@ const navLinks = [
 
 function App() {
   const [open, setOpen] = useState(false);
+  const [openNested, setOpenNested] = useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   return (
     <>

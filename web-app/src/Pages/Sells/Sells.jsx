@@ -4,6 +4,7 @@ import {
   Divider,
   FormControl,
   Grid,
+  Icon,
   IconButton,
   InputLabel,
   List,
@@ -22,8 +23,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import moment from "moment/moment";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useFetchAndLoad } from "../../hooks";
 import {
   get_brands,
@@ -33,12 +36,23 @@ import {
   insert_sell,
 } from "../../services";
 import { brandAdapter, methodAdapter, productAdapter } from "../../adapters";
-import { setProductState } from "../../redux/states/product.state";
+import {
+  setProductState,
+  updateProduct,
+} from "../../redux/states/product.state";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import styled from "@emotion/styled";
-import { setNullSell, setSellItem } from "../../redux/states/sell.state";
+import {
+  setNullSell,
+  setSellItem,
+  deleteSellItem,
+  updateSellItem,
+} from "../../redux/states/sell.state";
 import { setAccountState } from "../../redux/states/account.state";
 import { useSnackbar } from "notistack";
 
@@ -47,7 +61,8 @@ const Sells = () => {
   const sellItems = useSelector((state) => state.sells);
   const [methods, setMethods] = useState([]);
   const { loading, callEndpoint } = useFetchAndLoad();
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = useState("");
+  const [tableValue, setTableValue] = useState("");
   const item = useRef();
   const platform_id = useRef();
   const quantity = useRef();
@@ -55,6 +70,7 @@ const Sells = () => {
   const [brandValue, setBrandValue] = React.useState("");
   const [platformValue, setPlatformValue] = React.useState("");
   const accounts = useSelector((state) => state.accounts);
+  const [pStock, setProductStock] = useState(0);
 
   const [dense, setDense] = React.useState(false);
   const [secondary, setSecondary] = React.useState(false);
@@ -66,10 +82,39 @@ const Sells = () => {
     handleSells();
   }, []);
 
+  const deleteitem = (item) => {
+    let product;
+    let metadata;
+
+    let findBrand = products.find((Brand) => Brand.id === item.id);
+
+    if (findBrand) {
+      let index = products.indexOf(findBrand);
+      product = products[index];
+
+      let newStock = parseInt(product.stock) + parseInt(item.quantity);
+
+      console.log(newStock);
+      product = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        stock: newStock,
+        unitPrice: product.unitPrice,
+        status: product.status,
+      };
+
+      dispatch(updateProduct(product));
+      dispatch(deleteSellItem(item.id));
+      //setTableValue(quantity.current.value);
+    }
+  };
+
   const handleSells = async () => {
     const sells = await callEndpoint(get_sells());
     dispatch(setAccountState(sells.data));
   };
+
   const handleCharge = async () => {
     let products;
     let brands;
@@ -104,9 +149,59 @@ const Sells = () => {
     }
   };
 
+  const searchProductStock = (id) => {
+    const findStock = products.find((Product) => Product.id === id);
+    if (findStock) {
+      return findStock.stock;
+    }
+  };
+
+  const handleDecrease = (item) => {
+    let product;
+
+    let findBrand = products.find((Brand) => Brand.id === item.id);
+
+    if (findBrand) {
+      let index = products.indexOf(findBrand);
+      product = products[index];
+
+      let newStock = parseInt(product.stock) + 1;
+      let newQuantity = item.quantity - 1;
+
+      console.log(newQuantity);
+      product = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        stock: newStock,
+        unitPrice: product.unitPrice,
+        status: product.status,
+      };
+
+      let sellProduct = {
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        quantity: newQuantity,
+        unitPrice: item.unitPrice,
+      };
+      dispatch(updateSellItem(sellProduct));
+      console.log(sellProduct);
+      if (sellProduct.quantity == 0) {
+        dispatch(deleteSellItem(item.id));
+      }
+      dispatch(updateProduct(product));
+
+      //setTableValue(quantity.current.value);
+    }
+  };
+
   const handleChange = (event) => {
     setBrandValue(event.target.value);
+    setProductStock(searchProductStock(event.target.value));
+    setValue("");
   };
+
   const handleChangePlatform = (event) => {
     setPlatformValue(event.target.value);
   };
@@ -115,11 +210,21 @@ const Sells = () => {
     let product;
     let metadata;
 
+    if (quantity.current.value == "") {
+      enqueueSnackbar("La cantidad no puede ser menor a 1", {
+        anchorOrigin: { vertical: "top", horizontal: "center" },
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return;
+    }
+
     let findBrand = products.find((Brand) => Brand.id === brandValue);
 
     if (findBrand) {
       let index = products.indexOf(findBrand);
       product = products[index];
+      //console.log(product);
       metadata = {
         id: product.id,
         name: product.name,
@@ -127,10 +232,40 @@ const Sells = () => {
         quantity: quantity.current.value,
         unitPrice: product.unitPrice,
       };
-      dispatch(setSellItem(metadata));
-    }
 
-    const handleUpdate = () => {};
+      let newStock = product.stock - quantity.current.value;
+      console.log(quantity.current.value);
+      product = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        stock: newStock,
+        unitPrice: product.unitPrice,
+        status: product.status,
+      };
+      setProductStock(newStock);
+      dispatch(updateProduct(product));
+      dispatch(setSellItem(metadata));
+      setValue("");
+      //setTableValue(quantity.current.value);
+    }
+  };
+
+  const handleChangeQuantity = () => {
+    try {
+      let maxquantity = quantity.current.value;
+      let stock = pStock;
+
+      if (!isNaN(maxquantity)) {
+        if (parseInt(maxquantity) > stock) maxquantity = stock;
+
+        setValue(maxquantity);
+      } else {
+        return;
+      }
+    } catch (error) {
+      setValue("");
+    }
   };
 
   const handleSubmit = async (total) => {
@@ -183,10 +318,10 @@ const Sells = () => {
           Ventas
         </Typography>
       </Box>
-      <div className="w-full h-[94vh] flex justify-center items-start gap-20 mt-20 px-10 ">
-        <Box className=" w-[70vw] space-y-5 pb-10">
-          <Box className="flex gap-10">
-            <FormControl className="w-[350px]">
+      <div className="w-full flex flex-col md:flex-row justify-center items-start gap-20 mt-20 px-5 md:px-10 ">
+        <Box className="w-full md:w-[70vw] space-y-5 pb-5 md:pb-10">
+          <Box className="flex flex-col md:flex-row gap-10">
+            <FormControl className=" w-full md:w-[350px]">
               <InputLabel id="producto">Producto</InputLabel>
               <Select
                 id="producto"
@@ -196,21 +331,28 @@ const Sells = () => {
                 inputRef={item}
               >
                 {products &&
-                  products.map((product) => (
-                    <MenuItem
-                      value={product.id ? product.id : ""}
-                      key={product.id}
-                    >
-                      {product.name} | {product.brand.name} | sotck:{" "}
-                      {product.stock}
-                    </MenuItem>
-                  ))}
+                  products.map((product) => {
+                    if (product.status == 1 && product.stock != 0) {
+                      return (
+                        <MenuItem
+                          value={product.id ? product.id : ""}
+                          key={product.id}
+                        >
+                          {product.name} | {product.brand.name} | stock:
+                          {product.stock}
+                        </MenuItem>
+                      );
+                    }
+                  })}
               </Select>
             </FormControl>
+
             <TextField
               id="standard-basic"
               label="Cantidad"
               variant="standard"
+              value={value}
+              onInput={() => handleChangeQuantity()}
               inputRef={quantity}
             />
             <Button variant="contained" onClick={handleAdd}>
@@ -265,6 +407,7 @@ const Sells = () => {
                     >
                       Cantidad
                     </TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -280,15 +423,37 @@ const Sells = () => {
                       <TableCell align="center">{item.brand.name}</TableCell>
 
                       <TableCell align="center">${item.unitPrice}</TableCell>
-                      <TableCell align="center">
-                        <TextField
+                      <TableCell
+                        align="center"
+                        className="flex items-center justify-center"
+                      >
+                        <p>{item.quantity}</p>
+                        <IconButton
+                          aria-label="remove 1 "
+                          className="text-yellow-500"
+                          onClick={() => handleDecrease(item)}
+                        >
+                          <RemoveCircleIcon />
+                        </IconButton>
+                        {/* <TextField
                           id="outlined-number"
                           type="text"
                           placeholder="0"
-                          value={item.quantity}
+                          value={value}
+                          onInput={() => handleChangeQuantity()}
+                          inputRef={quantity}
                           variant="standard"
                           className="w-[50px] "
-                        />
+                        /> */}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          aria-label="delete"
+                          className="text-red-500"
+                          onClick={() => deleteitem(item)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -297,9 +462,9 @@ const Sells = () => {
             </TableContainer>
           )}
         </Box>
-        <Box className="flex flex-col space-y-10">
+        <Box className="flex flex-col space-y-10 ">
           <Paper
-            className="rounded-2xl w-[500px] overflow-hidden "
+            className="rounded-2xl w-full md:w-[500px] overflow-hidden "
             elevation={3}
           >
             <Typography className="bg-amber-500 text-white px-5 py-4 ">
@@ -367,12 +532,13 @@ const Sells = () => {
               <List dense={dense}>
                 {accounts &&
                   accounts.map((account) => (
-                    <>
+                    <div key={account.idSell}>
                       <Divider />
-                      <ListItem className=" flex" key={account.idSell}>
+                      <ListItem className=" flex">
                         <ListItemIcon>
                           <MonetizationOnIcon className="text-emerald-500" />
                         </ListItemIcon>
+
                         <ListItemText
                           primary={account.name}
                           secondary={account.dateCreated}
@@ -382,7 +548,7 @@ const Sells = () => {
                           <VisibilityIcon />
                         </IconButton>
                       </ListItem>
-                    </>
+                    </div>
                   ))}
               </List>
             </Demo>
