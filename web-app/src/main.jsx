@@ -22,6 +22,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import Method from "./Pages/Method/Method";
 import Sells from "./Pages/Sells/Sells";
+import Reports from "./Pages/Reports/Reports";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/plataformas",
         element: <Method />,
+      },
+      {
+        path: "/reportes",
+        element: <Reports />,
       },
     ],
   },

@@ -63,6 +63,14 @@ namespace PIA_PROG.data.Repositories
             var result = await db.ExecuteAsync(sql, new {idProduct_P = id, product.Name, product.IdBrand, product.Stock, product.UnitPrice, product.Status });
             return result > 0;
         }
+
+        public async Task<IEnumerable<Monthly_P>> GetMonth(int id)
+        {
+            var db = dbConnection();
+            var sql = @"CALL MONTHLY_REPORT(@Monthly_Report)";
+
+            return await db.QueryAsync<Monthly_P>(sql, new { Monthly_Report = id });
+        }
     }
 }
 

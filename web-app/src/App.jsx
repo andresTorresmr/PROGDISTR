@@ -31,13 +31,18 @@ const navLinks = [
     icon: <SellTwoToneIcon sx={{ color: "#16a34a" }} />,
   },
   {
+    title: "Plataformas",
+    path: "plataformas",
+    icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
+  },
+  {
     title: "Ventas",
     path: "ventas",
     icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
   },
   {
-    title: "Plataformas",
-    path: "plataformas",
+    title: "Reportes",
+    path: "reportes",
     icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
   },
 ];

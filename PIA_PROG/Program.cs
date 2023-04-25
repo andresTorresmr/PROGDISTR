@@ -20,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var mySQLConfig = new MySqlConfiguration(builder.Configuration.GetConnectionString("MySqlConnection"));
 builder.Services.AddSingleton(mySQLConfig);
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IMethodRepository, MethodRepository>();
