@@ -173,3 +173,14 @@ BEGIN
 	UPDATE PRODUCT SET Name = name, idBrand = idbrand, stock = stock, unitPrice = unitPrice, status = status WHERE idProduct = idProduct_P;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Monthly_Report`(
+in month_p INT
+)
+BEGIN
+	
+    SELECT Day(dateCreated)as day, SUM(total) as total FROM sell WHERE MONTH(dateCreated) = month_p GROUP BY day;
+END$$
+DELIMITER ;
+
