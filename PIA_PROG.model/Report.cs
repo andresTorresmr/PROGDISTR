@@ -3,8 +3,8 @@ namespace PIA_PROG.model
 {
 	public class Monthly
 	{
-		int day { get; set; }
-        int total { get; set; }
+		public int day { get; set; }
+        public Double total { get; set; }
     }
 }
 

@@ -19,10 +19,5 @@ namespace PIA_PROG.model
         public int Stock { get; set; }
         public double UnitPrice { get; set; }
     }
-    public class Monthly_P
-    {
-        int day { get; set; }
-        int total { get; set; }
-    }
 }
 
