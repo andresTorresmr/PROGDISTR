@@ -7,5 +7,6 @@ export const productAdapter = (product) => ({
   },
   stock: product.stock,
   unitPrice: product.unitPrice,
+  sellPrice: product.sellPrice,
   status: product.status,
 });

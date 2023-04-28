@@ -49,18 +49,18 @@ namespace PIA_PROG.data.Repositories
 
         public async Task<IEnumerable<Product>> InsertProduct(ProductIns product)
         {
-            var db = dbConnection();
+            var db = dbConnection();    
 
-            var sql = @"CALL INSERT_PRODUCT(@name, @idbrand, @stock, @unitPrice)";
-            return await db.QueryAsync<Product>(sql, new {product.Name, product.IdBrand, product.Stock, product.UnitPrice });
+            var sql = @"CALL INSERT_PRODUCT(@name, @idbrand, @stock, @unitPrice, @sellPrice)";
+            return await db.QueryAsync<Product>(sql, new {product.Name, product.IdBrand, product.Stock, product.UnitPrice, product.sellPrice });
             
         }
 
         public async Task<bool> UpdateProduct(int id, Product product)  
         {
             var db = dbConnection();
-            var sql = @"CALL UPDATE_PRODUCT(@idProduct_P, @name, @idbrand, @stock, @unitPrice, @status)";
-            var result = await db.ExecuteAsync(sql, new {idProduct_P = id, product.Name, product.IdBrand, product.Stock, product.UnitPrice, product.Status });
+            var sql = @"CALL UPDATE_PRODUCT(@idProduct_P, @name, @idbrand, @stock, @unitPrice, @sellPrice, @status)";
+            var result = await db.ExecuteAsync(sql, new {idProduct_P = id, product.Name, product.IdBrand, product.Stock, product.UnitPrice, product.sellPrice, product.Status });
             return result > 0;
         }
 

@@ -261,6 +261,14 @@ const Sells = () => {
 
         setValue(maxquantity);
       } else {
+        enqueueSnackbar(
+          "La cantidad a vender no puede ser mayor que el stock",
+          {
+            anchorOrigin: { vertical: "top", horizontal: "center" },
+            variant: "error",
+            autoHideDuration: 2000,
+          }
+        );
         return;
       }
     } catch (error) {

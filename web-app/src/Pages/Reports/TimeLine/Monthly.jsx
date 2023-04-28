@@ -10,8 +10,11 @@ import {
   FormHelperText,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
+  Typography,
 } from "@mui/material";
+import { product_report_Adapter } from "../../../adapters";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,55 +22,12 @@ const Monthly = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
   const [labels, setLabels] = useState([]);
   const [chartData, setData] = useState({});
+  const [productReport, setProductReport] = useState([]);
   const [month, setMonth] = useState("");
   const months = [
     {
-      id: 1,
-      name: "Enero",
-    },
-    {
-      id: 2,
-      name: "Febrero",
-    },
-    {
-      id: 3,
-      name: "Marzo",
-    },
-    {
       id: 4,
       name: "Abril",
-    },
-    {
-      id: 5,
-      name: "Mayo",
-    },
-    {
-      id: 6,
-      name: "Junio",
-    },
-    {
-      id: 7,
-      name: "Julio",
-    },
-    {
-      id: 8,
-      name: "Agosto",
-    },
-    {
-      id: 9,
-      name: "Septiembre",
-    },
-    {
-      id: 10,
-      name: "Octubre",
-    },
-    {
-      id: 11,
-      name: "Noviembre",
-    },
-    {
-      id: 12,
-      name: "Diciembre",
     },
   ];
 
@@ -75,11 +35,22 @@ const Monthly = () => {
     return Object.keys(obj).length === 0;
   }
 
-  const handleCharge = async (month) => {
+  const handleLoadProdducts = async (monthid) => {
+    setData([]);
+    let info;
+    const { data } = await callEndpoint(get_month_report(monthid));
+    info = data;
+    for (let product of info) {
+      product = product_report_Adapter(product);
+    }
+  };
+
+  const handleCharge = async (monthid) => {
+    setData({});
     let chartRender;
     let nameChart = [];
     let dataChart = [];
-    const { data } = await callEndpoint(get_month_report(month));
+    const { data } = await callEndpoint(get_month_report(monthid));
     for (let day of data) {
       nameChart.push(day.day);
       dataChart.push(day.total);
@@ -115,10 +86,12 @@ const Monthly = () => {
 
   const handleChange = (event) => {
     setMonth(event.target.value);
+    console.log(event.target);
+    handleCharge(event.target.value);
   };
 
   return (
-    <div className="flex justify-center items-center flex-col">
+    <div className="flex justify-center flex-col items-center">
       <FormControl>
         <InputLabel id="demo-simple-select-helper-label">Mes</InputLabel>
         <Select
@@ -129,19 +102,28 @@ const Monthly = () => {
           onChange={handleChange}
         >
           {months.map((month) => (
-            <MenuItem value={month.id}>{month.name}</MenuItem>
+            <MenuItem value={month.id} key={month.id}>
+              {month.name}
+            </MenuItem>
           ))}
         </Select>
         <FormHelperText>
           Selecciona un mes para revisar el reporte
         </FormHelperText>
       </FormControl>
-      <Button variant="contained" onClick={() => handleCharge(4)}>
+      {/* <Button variant="contained" onClick={() => handleCharge(4)}>
         Leer mes
-      </Button>
-      <div className="w-1/5">
-        <h1 className="text-center">Marzo</h1>
-        {!isObjEmpty(chartData) && <Doughnut data={chartData} />}
+      </Button> */}
+
+      <div className="w-full flex">
+        <Paper className="w-1/3 rounded-3xl py-10 px-8" elevation={3}>
+          <Typography variant="h5">Reporte de productos</Typography>
+        </Paper>
+
+        <div className=" w-full md:w-1/3">
+          <h1 className="text-center">{}</h1>
+          {!isObjEmpty(chartData) && <Doughnut data={chartData} />}
+        </div>
       </div>
     </div>
   );

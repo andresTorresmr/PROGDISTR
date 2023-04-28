@@ -35,5 +35,20 @@ namespace PIA_PROG.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("products/month/{month}")]
+        public async Task<IActionResult> GetMonthlyProductReport(int month)
+        {
+            var result = await _reportRepository.GetMonthlyProducReport(month);
+            Console.Write(result.Count());
+            if (result.Count() < 1)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { error = "No se encontró el reporte indicado" });
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
     }
 }

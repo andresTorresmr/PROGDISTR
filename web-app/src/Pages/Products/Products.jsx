@@ -153,7 +153,7 @@ const Products = () => {
       {loading && products_item ? (
         <Loading />
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={3}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -162,6 +162,7 @@ const Products = () => {
                 <TableCell align="center">Marca</TableCell>
                 <TableCell align="center">Stock</TableCell>
                 <TableCell align="center">Precio unitario</TableCell>
+                <TableCell align="center">Precio de venta</TableCell>
                 <TableCell align="center">Status</TableCell>
                 <TableCell align="center">Acciones</TableCell>
               </TableRow>
@@ -185,6 +186,7 @@ const Products = () => {
                     )}
                   </TableCell>
                   <TableCell align="center">${product.unitPrice}</TableCell>
+                  <TableCell align="center">${product.sellPrice}</TableCell>
                   <TableCell align="center">
                     {product.status == 1 ? (
                       <span className="stock">Activo</span>

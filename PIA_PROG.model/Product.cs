@@ -9,6 +9,7 @@ namespace PIA_PROG.model
         public string Brand { get; set; }
         public int Stock { get; set; }
         public double UnitPrice { get; set; }
+        public double sellPrice { get; set; }
         public int Status { get; set; }
     }
 
@@ -18,6 +19,7 @@ namespace PIA_PROG.model
         public int IdBrand { get; set; }
         public int Stock { get; set; }
         public double UnitPrice { get; set; }
+        public double sellPrice { get; set; }
     }
 }
 

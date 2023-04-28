@@ -26,6 +26,7 @@ const AddProductModal = ({ open, setOpen, brands }) => {
   const name = useRef();
   const stock = useRef();
   const unitPrice = useRef();
+  const sellPrice = useRef();
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -36,6 +37,7 @@ const AddProductModal = ({ open, setOpen, brands }) => {
       idBrand: brandValue,
       stock: stock.current.value,
       unitPrice: unitPrice.current.value,
+      sellPrice: sellPrice.current.value,
       status: 1,
     };
     try {
@@ -110,7 +112,7 @@ const AddProductModal = ({ open, setOpen, brands }) => {
               />
             </FormControl>
 
-            <FormControl sx={{ minWidth: "100%" }} size="small">
+            <FormControl sx={{ mb: 2, width: "100%" }} size="small">
               <InputLabel id="marca">Marca</InputLabel>
               <Select
                 labelId="marca"
@@ -126,6 +128,14 @@ const AddProductModal = ({ open, setOpen, brands }) => {
                     </MenuItem>
                   ))}
               </Select>
+            </FormControl>
+            <FormControl sx={{ width: "70%" }} size="medium">
+              <TextField
+                id="outlined-basic"
+                label="Precio de venta"
+                variant="outlined"
+                inputRef={sellPrice}
+              />
             </FormControl>
 
             <Box sx={{ display: "flex", gap: 2, mt: 2, mb: 2 }}>

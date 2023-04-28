@@ -35,6 +35,7 @@ const UpdateProductModal = ({
   const name = useRef();
   const stock = useRef();
   const unitPrice = useRef();
+  const sellPrice = useRef();
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
@@ -58,6 +59,7 @@ const UpdateProductModal = ({
       brand: brandName,
       stock: stock.current.value,
       unitPrice: unitPrice.current.value,
+      sellPrice: sellPrice.current.value,
       status: status,
     };
 
@@ -184,6 +186,17 @@ const UpdateProductModal = ({
                   variant="outlined"
                   defaultValue={product.unitPrice}
                   inputRef={unitPrice}
+                />
+              </FormControl>
+            </Box>
+            <Box sx={{ display: "flex", gap: 2, mt: 2, mb: 2 }}>
+              <FormControl sx={{ width: "50%" }} size="medium">
+                <TextField
+                  id="outlined-basic"
+                  label="Precio de venta"
+                  variant="outlined"
+                  defaultValue={product.sellPrice}
+                  inputRef={sellPrice}
                 />
               </FormControl>
             </Box>
