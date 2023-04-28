@@ -66,10 +66,10 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_PRODUCT`(IN `name` VARCHAR(100), IN `idbrand` INT, IN `stock` INT, IN `unitPrice` DOUBLE)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_PRODUCT`(IN `name` VARCHAR(100), IN `idbrand` INT, IN `stock` INT, IN `unitPrice` DOUBLE, IN `sellPrice` DOUBLE)
 BEGIN
-	INSERT INTO PRODUCT(Name, idBrand, stock, unitPrice, status) VALUES(name, idbrand, stock, unitPrice, 1);
-    SELECT p.idProduct, p.Name, p.idBrand, b.Name As "Brand", p.stock, p.unitPrice, p.status FROM PRODUCT p INNER JOIN BRAND b ON p.idBrand = b.idBRAND WHERE p.idProduct = (SELECT LAST_INSERT_ID());
+	INSERT INTO PRODUCT(Name, idBrand, stock, unitPrice, sellPrice, status) VALUES(name, idbrand, stock, unitPrice, sellPrice, 1);
+    SELECT p.idProduct, p.Name, p.idBrand, b.Name As "Brand", p.stock, p.unitPrice, p.sellPrice, p.status FROM PRODUCT p INNER JOIN BRAND b ON p.idBrand = b.idBRAND WHERE p.idProduct = (SELECT LAST_INSERT_ID());
 END$$
 DELIMITER ;
 
@@ -118,6 +118,16 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Monthly_Report`(
+in month_p INT
+)
+BEGIN
+	
+    SELECT Day(dateCreated)as day, SUM(total) as total FROM sell WHERE MONTH(dateCreated) = month_p GROUP BY day;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `new_procedure`(
 IN `idMethodP` INT,
  IN `nameP` VARCHAR(100), 
@@ -136,9 +146,18 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PRODUCT_REPORT`(
+IN month_p INT
+)
+BEGIN
+	SELECT sd.idProduct, p.name as name, b.name as brand, COUNT(sd.idProduct) as sells FROM selldata sd INNER JOIN sell s ON sd.idSell = s.idSell INNER JOIN product p ON sd.idProduct = p.idProduct INNER JOIN brand b ON p.idBrand = b.idBrand WHERE MONTH(s.dateCreated) = month_p GROUP BY sd.idProduct;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PRODUCTS`()
 BEGIN
-	SELECT p.idProduct, p.Name, p.idBrand, b.Name As "Brand", p.stock, p.unitPrice, p.status FROM PRODUCT p INNER JOIN BRAND b ON p.idBrand = b.idBRAND WHERE p.status NOT IN (0);
+	SELECT p.idProduct, p.Name, p.idBrand, b.Name As "Brand", p.stock, p.unitPrice, p.sellPrice, p.status FROM PRODUCT p INNER JOIN BRAND b ON p.idBrand = b.idBRAND WHERE p.status NOT IN (0);
 END$$
 DELIMITER ;
 
@@ -168,19 +187,8 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATE_PRODUCT`(IN `idProduct_P` INT, IN `name` VARCHAR(100), IN `idbrand` INT, IN `stock` INT, IN `unitPrice` DOUBLE, IN `status` INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UPDATE_PRODUCT`(IN `idProduct_P` INT, IN `name` VARCHAR(100), IN `idbrand` INT, IN `stock` INT, IN `unitPrice` DOUBLE, IN `sellPrice` DOUBLE, IN `status` INT)
 BEGIN
-	UPDATE PRODUCT SET Name = name, idBrand = idbrand, stock = stock, unitPrice = unitPrice, status = status WHERE idProduct = idProduct_P;
+	UPDATE PRODUCT SET Name = name, idBrand = idbrand, stock = stock, unitPrice = unitPrice, sellPrice = sellPrice, status = status WHERE idProduct = idProduct_P;
 END$$
 DELIMITER ;
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Monthly_Report`(
-in month_p INT
-)
-BEGIN
-	
-    SELECT Day(dateCreated)as day, SUM(total) as total FROM sell WHERE MONTH(dateCreated) = month_p GROUP BY day;
-END$$
-DELIMITER ;
-
