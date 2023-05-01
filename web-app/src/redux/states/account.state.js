@@ -11,7 +11,6 @@ export const userSlice = createSlice({
     },
 
     setAccountState: (state, action) => {
-      console.log(action.payload);
       return action.payload;
     },
   },

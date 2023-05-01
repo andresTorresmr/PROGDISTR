@@ -17,7 +17,14 @@ namespace PIA_PROG.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSells()
+        public async Task<IActionResult> GetAllSells()
+        {
+            return Ok(await _sellRepository.GetAllSells());
+        }
+
+        [HttpGet]
+        [Route("widget")]
+        public async Task<IActionResult> SellsWidget()
         {
             return Ok(await _sellRepository.GetSells());
         }
@@ -32,10 +39,23 @@ namespace PIA_PROG.Controllers
                 return BadRequest(ModelState);
 
             var created = await _sellRepository.InsertSell(sell);
-            System.Diagnostics.Debug.WriteLine(created);
+            
             return Created("created", created);
 
         }
+
+        [HttpGet]
+        [Route("details/{id}")]
+        public async Task<IActionResult> SellDetails(int id)
+        {
+
+            var sellInfo = await _sellRepository.GetSellInfo(id);
+            var sellDetails = await _sellRepository.GetDetails(id);
+            var response = sellInfo.FirstOrDefault();
+            return Created("created", new { sell = sellInfo.FirstOrDefault(), details = sellDetails });
+
+        }
+
     }
 }
 

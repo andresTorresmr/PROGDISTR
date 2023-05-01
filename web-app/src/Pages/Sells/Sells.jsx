@@ -71,10 +71,11 @@ const Sells = () => {
   const [platformValue, setPlatformValue] = React.useState("");
   const accounts = useSelector((state) => state.accounts);
   const [pStock, setProductStock] = useState(0);
-
+  const paysWith = useRef();
+  const [paysValue, setPaysValue] = useState("");
+  const [changeValue, setChangeValue] = useState("");
   const [dense, setDense] = React.useState(false);
   const [secondary, setSecondary] = React.useState(false);
-
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -94,16 +95,16 @@ const Sells = () => {
 
       let newStock = parseInt(product.stock) + parseInt(item.quantity);
 
-      console.log(newStock);
       product = {
         id: product.id,
         name: product.name,
         brand: product.brand,
         stock: newStock,
-        unitPrice: product.unitPrice,
+        sellPrice: product.sellPrice,
         status: product.status,
       };
 
+      console.log(item);
       dispatch(updateProduct(product));
       dispatch(deleteSellItem(item.id));
       //setTableValue(quantity.current.value);
@@ -113,6 +114,7 @@ const Sells = () => {
   const handleSells = async () => {
     const sells = await callEndpoint(get_sells());
     dispatch(setAccountState(sells.data));
+    setChangeValue("");
   };
 
   const handleCharge = async () => {
@@ -122,6 +124,7 @@ const Sells = () => {
 
     try {
       const { data } = await callEndpoint(get_products());
+
       const brand = await callEndpoint(get_brands());
       const platforms = await callEndpoint(get_methods());
 
@@ -168,13 +171,12 @@ const Sells = () => {
       let newStock = parseInt(product.stock) + 1;
       let newQuantity = item.quantity - 1;
 
-      console.log(newQuantity);
       product = {
         id: product.id,
         name: product.name,
         brand: product.brand,
         stock: newStock,
-        unitPrice: product.unitPrice,
+        sellPrice: product.sellPrice,
         status: product.status,
       };
 
@@ -183,10 +185,9 @@ const Sells = () => {
         name: item.name,
         brand: item.brand,
         quantity: newQuantity,
-        unitPrice: item.unitPrice,
+        sellPrice: item.sellPrice,
       };
       dispatch(updateSellItem(sellProduct));
-      console.log(sellProduct);
       if (sellProduct.quantity == 0) {
         dispatch(deleteSellItem(item.id));
       }
@@ -224,23 +225,23 @@ const Sells = () => {
     if (findBrand) {
       let index = products.indexOf(findBrand);
       product = products[index];
-      //console.log(product);
       metadata = {
         id: product.id,
         name: product.name,
         brand: product.brand,
         quantity: quantity.current.value,
-        unitPrice: product.unitPrice,
+        sellPrice: product.sellPrice,
       };
 
       let newStock = product.stock - quantity.current.value;
-      console.log(quantity.current.value);
+
       product = {
         id: product.id,
         name: product.name,
         brand: product.brand,
         stock: newStock,
         unitPrice: product.unitPrice,
+        sellPrice: product.sellPrice,
         status: product.status,
       };
       setProductStock(newStock);
@@ -251,68 +252,111 @@ const Sells = () => {
     }
   };
 
-  const handleChangeQuantity = () => {
-    try {
-      let maxquantity = quantity.current.value;
-      let stock = pStock;
-
-      if (!isNaN(maxquantity)) {
-        if (parseInt(maxquantity) > stock) maxquantity = stock;
-
-        setValue(maxquantity);
-      } else {
-        enqueueSnackbar(
-          "La cantidad a vender no puede ser mayor que el stock",
-          {
-            anchorOrigin: { vertical: "top", horizontal: "center" },
-            variant: "error",
-            autoHideDuration: 2000,
-          }
-        );
-        return;
-      }
-    } catch (error) {
-      setValue("");
-    }
-  };
-
-  const handleSubmit = async (total) => {
-    let sellData;
-    let totalitems = [...sellItems];
-    totalitems.map((tempItem, index) => {
-      totalitems[index] = {
-        idProduct: tempItem.id,
-        quantity: parseInt(tempItem.quantity),
-        unitPrice: tempItem.unitPrice,
-      };
-    });
-    sellData = {
-      data: JSON.stringify(totalitems),
-      idMethod: platform_id.current.value,
-      total,
-    };
-
-    try {
-      const data = await callEndpoint(insert_sell(sellData));
-      enqueueSnackbar("Producto agregado exitosamente.", {
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-      handleSells();
-
-      dispatch(setNullSell());
-    } catch (error) {
-      enqueueSnackbar(error, {
-        anchorOrigin: { vertical: "top", horizontal: "right" },
+  const numberValidation = (text) => {
+    if (!isNaN(text)) {
+      return text;
+    } else {
+      enqueueSnackbar("Solo se permiten valores numéricos", {
+        anchorOrigin: { vertical: "top", horizontal: "center" },
         variant: "error",
         autoHideDuration: 2000,
       });
     }
   };
 
+  const totalSellValidation = (money) => {
+    let total = totalAccount + totalAccount * 0.16;
+    if (money < total) {
+      enqueueSnackbar(
+        "La cantidad a pagar no puede ser menor que el total de venta",
+        {
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+          variant: "error",
+          autoHideDuration: 3000,
+        }
+      );
+    } else {
+      return money;
+    }
+  };
+
+  const handlePaysWith = () => {
+    let total = totalAccount + totalAccount * 0.16;
+    let money = paysWith.current.value;
+    if (numberValidation(money)) {
+      setPaysValue(money);
+      setChangeValue(money - total);
+    } else {
+      setPaysValue("");
+    }
+  };
+
+  const handleChangeQuantity = () => {
+    try {
+      let maxquantity = quantity.current.value;
+      let stock = pStock;
+
+      if (numberValidation(maxquantity)) {
+        // console.log(datavalidation);
+        if (maxquantity > stock) {
+          maxquantity = stock;
+          enqueueSnackbar(
+            "La cantidad a vender no puede ser mayor que el stock",
+            {
+              anchorOrigin: { vertical: "top", horizontal: "center" },
+              variant: "error",
+              autoHideDuration: 2000,
+            }
+          );
+        }
+
+        setValue(maxquantity);
+      }
+    } catch (error) {}
+  };
+
+  const handleSubmit = async (total) => {
+    let sellData;
+    let totalitems = [...sellItems];
+
+    if (totalSellValidation(paysValue)) {
+      totalitems.map((tempItem, index) => {
+        totalitems[index] = {
+          idProduct: tempItem.id,
+          quantity: parseInt(tempItem.quantity),
+          sellPrice: tempItem.sellPrice,
+        };
+      });
+      sellData = {
+        data: JSON.stringify(totalitems),
+        idMethod: platform_id.current.value,
+        total,
+        pays: parseInt(paysValue),
+        change: paysValue - total,
+      };
+
+      try {
+        const data = await callEndpoint(insert_sell(sellData));
+        enqueueSnackbar("Producto agregado exitosamente.", {
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+        handleSells();
+
+        dispatch(setNullSell());
+      } catch (error) {
+        enqueueSnackbar(error, {
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
+    }
+  };
+
   const totalAccount = sellItems.reduce((accumulator, object) => {
-    return accumulator + object.unitPrice * object.quantity;
+    return accumulator + object.sellPrice * object.quantity;
   }, 0);
 
   const Demo = styled("div")(({ theme }) => ({
@@ -381,7 +425,7 @@ const Sells = () => {
               <Table
                 sx={{ minWidth: 250 }}
                 aria-label="simple table"
-                className="text-red-500"
+                className=""
               >
                 <TableHead className="">
                   <TableRow className="">
@@ -407,7 +451,7 @@ const Sells = () => {
                       className="text-slate-700 font-semibold text-md"
                       align="center"
                     >
-                      Precio unitario
+                      Precio
                     </TableCell>
                     <TableCell
                       className="text-slate-700 font-semibold text-md"
@@ -418,7 +462,7 @@ const Sells = () => {
                     <TableCell />
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="">
                   {sellItems.map((item) => (
                     <TableRow
                       key={item.id}
@@ -430,7 +474,7 @@ const Sells = () => {
                       <TableCell align="center">{item.name}</TableCell>
                       <TableCell align="center">{item.brand.name}</TableCell>
 
-                      <TableCell align="center">${item.unitPrice}</TableCell>
+                      <TableCell align="center">${item.sellPrice}</TableCell>
                       <TableCell
                         align="center"
                         className="flex items-center justify-center"
@@ -470,7 +514,7 @@ const Sells = () => {
             </TableContainer>
           )}
         </Box>
-        <Box className="flex flex-col space-y-10 ">
+        <Box className="flex flex-col w-full md:w-auto space-y-10 ">
           <Paper
             className="rounded-2xl w-full md:w-[500px] overflow-hidden "
             elevation={3}
@@ -492,6 +536,27 @@ const Sells = () => {
                   ${totalAccount + totalAccount * 0.16}{" "}
                 </span>
               </Typography>
+              <Box className="flex flex-col md:flex-row gap-3 items-center">
+                <FormControl className="w-full">
+                  <TextField
+                    id="standard-basic"
+                    label="Paga con"
+                    variant="outlined"
+                    value={paysValue}
+                    onInput={() => handlePaysWith()}
+                    inputRef={paysWith}
+                  />
+                </FormControl>
+                <FormControl className="w-full">
+                  <TextField
+                    disabled
+                    id="standard-basic"
+                    label="Cambio"
+                    className="bg-gray-200"
+                    value={changeValue}
+                  />
+                </FormControl>
+              </Box>
               <FormControl className="w-full">
                 <InputLabel id="plataforma">Plataforma</InputLabel>
                 <Select
