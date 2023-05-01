@@ -2,10 +2,12 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ADDSELL`(
 in dataP varchar(10000),
 in idMethodP INT,
-in totalP Decimal(2)
+in totalP Decimal(2),
+in paysP Decimal(2),
+in changeP Decimal(2)
 )
 BEGIN
-	INSERT INTO SELL( data, total, idMethod) VALUES ( dataP, totalP, idMethodP);
+	INSERT INTO SELL( data, total, idMethod, pays, acChange) VALUES ( dataP, totalP, idMethodP, paysP, changeP);
     SELECT s.idSell, s.data, m.name, s.total FROM SELL s INNER JOIN Method m ON s.idMethod = m.idMethod WHERE s.idSell = (SELECT LAST_INSERT_ID());
 END$$
 DELIMITER ;
@@ -77,15 +79,17 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `INSERT_SELL`(
 in dataP JSON,
 in idMethodP INT,
-in totalP double
+in totalP double,
+in paysP double,
+in changeP double
 )
 BEGIN
 	DECLARE total_temp_rows INT DEFAULT 0;
     DECLARE initial_row_start INT DEFAULT 0; 
     DECLARE quantity_product_sell INT DEFAULT 0;
     DECLARE id_product_delete INT DEFAULT 0;
-	INSERT INTO Sell(idMethod, total) VALUES (idMethodP, totalP );
-    CREATE TEMPORARY TABLE IF NOT EXISTS temp_data SELECT * FROM JSON_TABLE(dataP,"$[*]" columns(idProduct int path "$.idProduct", quantity int path "$.quantity", unitPrice double path "$.unitPrice" ))as je;	
+	INSERT INTO Sell(idMethod, total, pays, acChange) VALUES (idMethodP, totalP, paysP, changeP );
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_data SELECT * FROM JSON_TABLE(dataP,"$[*]" columns(idProduct int path "$.idProduct", quantity int path "$.quantity", unitPrice double path "$.sellPrice" ))as je;	
     
     
     
@@ -104,7 +108,7 @@ BEGIN
           SET initial_row_start = initial_row_start + 1;
 	END WHILE;
     
-    SELECT s.idSell, s.idMethod, m.name, s.total, s.dateCreated FROM SELL s INNER JOIN Method m ON s.idMethod = m.idMethod WHERE s.idSell = (SELECT last_insert_id());
+    SELECT s.idSell, s.idMethod, m.name, s.total, s.pays, s.acChange, s.dateCreated FROM SELL s INNER JOIN Method m ON s.idMethod = m.idMethod WHERE s.idSell = (SELECT last_insert_id());
     DROP TABLE temp_data;
     
 END$$
@@ -162,9 +166,34 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sell_data`(
+in idP INT
+)
+BEGIN
+	select  p.name as "product", b.name as "brand", sd.quantity, (sd.unitPrice * sd.quantity) as "sellPrice" FROM selldata sd INNER JOIN product p ON sd.idProduct = p.idProduct INNER JOIN brand b ON p.idBRAND = b.idBrand WHERE sd.idSell = idP;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SELL_INFO`(
+in idP INT
+)
+BEGIN
+	select s.idSell, m.name, s.total, s.pays, s.acChange as "change", s.dateCreated from sell s INNER JOIN method m ON s.idMethod = m.idMethod where idSell = idP;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SELLS`()
 BEGIN
 	SELECT s.idSell, s.idMethod, m.name, s.total, s.dateCreated FROM SELL s INNER JOIN Method m ON s.idMethod = m.idMethod ORDER BY s.dateCreated DESC LIMIT 5;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SELLS_REPORT`()
+BEGIN
+	SELECT s.idSell, s.idMethod, m.name, s.total, s.dateCreated FROM SELL s INNER JOIN Method m ON s.idMethod = m.idMethod ORDER BY s.dateCreated DESC;
 END$$
 DELIMITER ;
 
