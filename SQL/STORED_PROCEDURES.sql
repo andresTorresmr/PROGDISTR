@@ -13,6 +13,14 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ANUAL_REPORT`()
+BEGIN
+	SET lc_time_names = 'es_MX';
+	SELECT SUM(total) as ventas, MONTHNAME(dateCreated) as nombre FROM sell GROUP BY nombre;
+END$$
+DELIMITER ;
+
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `BRAND_DETAILS`(IN `idBrand_P` INT)
 BEGIN
 	SELECT idBrand, name, status FROM brand WHERE status NOT IN (0) AND idBrand = idBrand_P;
