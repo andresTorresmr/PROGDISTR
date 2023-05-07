@@ -47,25 +47,21 @@ const Reports = () => {
           aria-label="basic tabs example"
         >
           <Tab label="Ventas totales" {...a11yProps(0)} />
-          <Tab label="Semanal" {...a11yProps(1)} />
-          <Tab label="Mensual" {...a11yProps(2)} />
+          <Tab label="Mensual" {...a11yProps(1)} />
           <Tab label="Anual" {...a11yProps(2)} />
-          <Tab label="Productos" {...a11yProps(2)} />
+          <Tab label="Productos" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <ALlSells />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <DetailsModal />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         <Monthly />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         Anual
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={3}>
         Productos
       </TabPanel>
     </>

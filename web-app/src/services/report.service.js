@@ -16,7 +16,7 @@ export const get_product_monthly_report = (month) => {
   const controller = loadAbort();
 
   return {
-    call: server.get(`Report/monthly/${month}`, {
+    call: server.get(`Report/products/month/${month}`, {
       signal: controller.signal,
     }),
     controller,

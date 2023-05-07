@@ -3,7 +3,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 import { Doughnut } from "react-chartjs-2";
 import { useFetchAndLoad } from "../../../hooks";
-import { get_month_report } from "../../../services";
+import {
+  get_month_report,
+  get_product_monthly_report,
+} from "../../../services";
 import {
   Button,
   FormControl,
@@ -12,6 +15,11 @@ import {
   MenuItem,
   Paper,
   Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
 import { product_report_Adapter } from "../../../adapters";
@@ -28,6 +36,10 @@ const Monthly = () => {
     {
       id: 4,
       name: "Abril",
+    },
+    {
+      id: 5,
+      name: "Mayo",
     },
   ];
 
@@ -50,7 +62,17 @@ const Monthly = () => {
     let chartRender;
     let nameChart = [];
     let dataChart = [];
+    let productReport = [];
     const { data } = await callEndpoint(get_month_report(monthid));
+    const products_report = await callEndpoint(
+      get_product_monthly_report(monthid)
+    );
+
+    productReport = products_report.data;
+    productReport.map((item, index) => {
+      productReport[index] = product_report_Adapter(item);
+    });
+
     for (let day of data) {
       nameChart.push(day.day);
       dataChart.push(day.total);
@@ -82,6 +104,8 @@ const Monthly = () => {
       ],
     };
     setData(chartRender);
+
+    setProductReport(productReport);
   };
 
   const handleChange = (event) => {
@@ -115,12 +139,37 @@ const Monthly = () => {
         Leer mes
       </Button> */}
 
-      <div className="w-full flex">
-        <Paper className="w-1/3 rounded-3xl py-10 px-8" elevation={3}>
-          <Typography variant="h5">Reporte de productos</Typography>
-        </Paper>
+      <div className="w-full flex items-center md:items-start gap-10 md:gap-0 flex-col-reverse  md:flex-row">
+        {!isObjEmpty(chartData) && (
+          <Paper
+            className="w-full md:w-1/3 rounded-3xl py-10 px-8"
+            elevation={3}
+          >
+            <Typography variant="h5">Reporte de productos</Typography>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Marca</TableCell>
+                  <TableCell>Ventas (unidad)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {productReport.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.id}</TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.brand}</TableCell>
+                    <TableCell>{product.sells}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        )}
 
-        <div className=" w-full md:w-1/3">
+        <div className=" w-1/2 md:w-1/3">
           <h1 className="text-center">{}</h1>
           {!isObjEmpty(chartData) && <Doughnut data={chartData} />}
         </div>

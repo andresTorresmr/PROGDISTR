@@ -265,7 +265,7 @@ const Sells = () => {
   };
 
   const totalSellValidation = (money) => {
-    let total = totalAccount + totalAccount * 0.16;
+    let total = totalAccount;
     if (money < total) {
       enqueueSnackbar(
         "La cantidad a pagar no puede ser menor que el total de venta",
@@ -281,11 +281,15 @@ const Sells = () => {
   };
 
   const handlePaysWith = () => {
-    let total = totalAccount + totalAccount * 0.16;
+    let total = totalAccount;
     let money = paysWith.current.value;
     if (numberValidation(money)) {
       setPaysValue(money);
-      setChangeValue(money - total);
+      if (money - total >= 0) {
+        setChangeValue(money - total);
+      } else {
+        setChangeValue("");
+      }
     } else {
       setPaysValue("");
     }
@@ -523,18 +527,15 @@ const Sells = () => {
               Detalle
             </Typography>
             <Box className="px-5 space-y-4 pb-4">
-              <Typography className="font-medium mt-4">
+              {/* <Typography className="font-medium mt-4">
                 Subtotal : ${totalAccount}
-              </Typography>
-              <Typography className="font-medium">
+              </Typography> */}
+              {/* <Typography className="font-medium">
                 IVA(16%) : ${totalAccount * 0.16}
-              </Typography>
+              </Typography> */}
               <Divider variant="middle" />
               <Typography className="font-medium text-2xl mb-2 ">
-                Total :{" "}
-                <span className="text-emerald-500">
-                  ${totalAccount + totalAccount * 0.16}{" "}
-                </span>
+                Total :<span className="text-emerald-500">${totalAccount}</span>
               </Typography>
               <Box className="flex flex-col md:flex-row gap-3 items-center">
                 <FormControl className="w-full">
@@ -584,7 +585,7 @@ const Sells = () => {
               <Button
                 variant="contained"
                 className="w-full"
-                onClick={() => handleSubmit(totalAccount + totalAccount * 0.16)}
+                onClick={() => handleSubmit(totalAccount)}
               >
                 Cerrar venta
               </Button>
