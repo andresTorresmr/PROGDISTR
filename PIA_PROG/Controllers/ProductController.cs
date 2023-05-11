@@ -23,6 +23,8 @@ namespace PIA_PROG.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
+            
+
             return Ok(await _productRepository.GetAllProducts());
         }
 

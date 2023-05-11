@@ -12,6 +12,17 @@ export const get_month_report = (month) => {
   };
 };
 
+export const anual_report_service = () => {
+  const controller = loadAbort();
+
+  return {
+    call: server.get("report/anual", {
+      signal: controller.signal,
+    }),
+    controller,
+  };
+};
+
 export const get_product_monthly_report = (month) => {
   const controller = loadAbort();
 

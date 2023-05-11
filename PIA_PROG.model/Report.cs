@@ -6,6 +6,11 @@ namespace PIA_PROG.model
 		public int day { get; set; }
         public Double total { get; set; }
     }
+	public class AnualReport
+	{
+		public string? month { get; set; }
+		public Double total { get; set; }
+	}
 	public class ProductReport
 	{
 		public int idProduct { get; set; }

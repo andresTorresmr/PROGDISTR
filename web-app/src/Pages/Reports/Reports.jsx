@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { ALlSells, DetailsModal, Monthly } from "./TimeLine";
+import { ALlSells, Anual, DetailsModal, Monthly } from "./TimeLine";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -49,7 +49,6 @@ const Reports = () => {
           <Tab label="Ventas totales" {...a11yProps(0)} />
           <Tab label="Mensual" {...a11yProps(1)} />
           <Tab label="Anual" {...a11yProps(2)} />
-          <Tab label="Productos" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -59,10 +58,7 @@ const Reports = () => {
         <Monthly />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Anual
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Productos
+        <Anual />
       </TabPanel>
     </>
   );

@@ -36,6 +36,21 @@ namespace PIA_PROG.Controllers
         }
 
         [HttpGet]
+        [Route("anual")]
+        public async Task<IActionResult> GetAnualReport()
+        {
+            var result = await _reportRepository.GetAnualReport();
+            if (result.Count() < 1)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { error = "No se encontró el reporte indicado" });
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+
+        [HttpGet]
         [Route("products/month/{month}")]
         public async Task<IActionResult> GetMonthlyProductReport(int month)
         {

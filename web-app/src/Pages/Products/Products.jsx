@@ -20,6 +20,7 @@ import UpdateProductModal from "./Modals/UpdateProductModal";
 import DeleteProductModal from "./Modals/DeleteProductModal";
 import SearchIcon from "@mui/icons-material/Search";
 import { setProductState } from "../../redux/states/product.state";
+import { enqueueSnackbar } from "notistack";
 
 const Products = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -68,7 +69,12 @@ const Products = () => {
 
       setBrands(brands);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      enqueueSnackbar(error.response.data.error, {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
   };
 
