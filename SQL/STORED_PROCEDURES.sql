@@ -16,7 +16,7 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ANUAL_REPORT`()
 BEGIN
 	SET lc_time_names = 'es_MX';
-	SELECT SUM(total) as ventas, MONTHNAME(dateCreated) as nombre FROM sell GROUP BY nombre;
+	SELECT SUM(total) as total, MONTHNAME(dateCreated) as month FROM sell GROUP BY month;
 END$$
 DELIMITER ;
 
