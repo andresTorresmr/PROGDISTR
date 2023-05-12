@@ -1314,3 +1314,11 @@ C:/Users/andre/Desktop/PIAPROGDISTR/PROGDISTR/PIA_PROG/obj/Debug/net6.0/ref/PIA_
 /Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/obj/Debug/net6.0/PIA_PROG.pdb
 /Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/obj/Debug/net6.0/PIA_PROG.genruntimeconfig.cache
 /Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/obj/Debug/net6.0/ref/PIA_PROG.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.Logging.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
+/Users/andrestorres/Desktop/Programación/PROGDISTR/PIA_PROG/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll

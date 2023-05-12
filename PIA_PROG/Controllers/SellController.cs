@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PIA_PROG.data.Repositories;
 using PIA_PROG.model;
@@ -6,6 +7,7 @@ using PIA_PROG.model;
 namespace PIA_PROG.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class SellController : ControllerBase
 	{

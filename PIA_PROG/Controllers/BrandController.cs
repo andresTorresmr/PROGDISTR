@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PIA_PROG.data.Repositories;
 using PIA_PROG.model;
@@ -9,6 +10,7 @@ using PIA_PROG.model;
 namespace PIA_PROG.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
 
     public class BrandController : ControllerBase
@@ -35,7 +37,7 @@ namespace PIA_PROG.Controllers
             Console.Write(result.Count());
             if (result.Count() < 1)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { error = "No se encontró la marca indicada" });
+                return StatusCode(StatusCodes.Status400BadRequest, new { error = "No se encontrï¿½ la marca indicada" });
             }
             else
             {
