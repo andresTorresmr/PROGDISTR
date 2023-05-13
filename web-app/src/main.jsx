@@ -23,11 +23,21 @@ import { store } from "./redux/store";
 import Method from "./Pages/Method/Method";
 import Sells from "./Pages/Sells/Sells";
 import Reports from "./Pages/Reports/Reports";
+import Login from "./Pages/Login/Login";
+import { Protected } from "./utilities";
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "/",
-    element: <App />,
+    element: (
+      <Protected>
+        <App />
+      </Protected>
+    ),
     children: [
       {
         path: "/productos",

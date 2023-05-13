@@ -1,4 +1,3 @@
-import axios from "axios";
 import { server } from "../config";
 import { loadAbort } from "../utilities";
 

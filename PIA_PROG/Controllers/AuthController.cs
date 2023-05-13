@@ -26,6 +26,7 @@ namespace PIA_PROG.Controllers
             connection = config.GetConnectionString("MySqlConnection");
         }
 
+
         [HttpPost]
         [Route("login")]
         public IActionResult validate([FromBody] login request)

@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import Inventory2TwoToneIcon from "@mui/icons-material/Inventory2TwoTone";
@@ -23,27 +24,32 @@ const navLinks = [
   {
     title: "Productos",
     path: "productos",
-    icon: <Inventory2TwoToneIcon sx={{ color: "#16a34a" }} />,
+    icon: <Inventory2TwoToneIcon />,
   },
   {
     title: "Marcas",
     path: "marcas",
-    icon: <SellTwoToneIcon sx={{ color: "#16a34a" }} />,
+    icon: <SellTwoToneIcon />,
   },
   {
     title: "Plataformas",
     path: "plataformas",
-    icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
+    icon: <StorefrontTwoToneIcon />,
   },
   {
     title: "Ventas",
     path: "ventas",
-    icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
+    icon: <StorefrontTwoToneIcon />,
   },
   {
     title: "Reportes",
     path: "reportes",
-    icon: <StorefrontTwoToneIcon sx={{ color: "#16a34a" }} />,
+    icon: <StorefrontTwoToneIcon />,
+  },
+  {
+    title: "Cerrar sesión",
+    path: "login",
+    icon: <LogoutIcon />,
   },
 ];
 

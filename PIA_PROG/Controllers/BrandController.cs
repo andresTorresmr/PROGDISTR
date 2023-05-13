@@ -22,6 +22,7 @@ namespace PIA_PROG.Controllers
             _brandRepository = brandRepository;
         }
 
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAllBrands()

@@ -20,6 +20,7 @@ import { setBrandState } from "../../redux/states/brand.state";
 import UpdateBrandModal from "./Modals/UpdateBrandModal";
 import DeleteBrandModal from "./Modals/DeleteBrandModal";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
 
 const Brands = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -31,6 +32,7 @@ const Brands = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const dispatch = useDispatch();
   const brands_state = useSelector((state) => state.brands);
+  const navigate = useNavigate();
   // BUSCADOR
   const [brand_search, setBrandSearch] = useState(
     useSelector((state) => state.brands)
@@ -40,7 +42,6 @@ const Brands = () => {
 
   useEffect(() => {
     handleCharge();
-    //console.log(brands_item);
   }, []);
 
   const handleCharge = async () => {
@@ -57,9 +58,10 @@ const Brands = () => {
       // setBrandSearch(brands);
       // setBrandTable(brands);
     } catch (error) {
-      console.log(error);
+      if (error.response != 200) {
+        navigate("/login", { replace: true });
+      }
     }
-    //console.log(brands_item);
   };
 
   const handleUpdate = async (id, name, status) => {

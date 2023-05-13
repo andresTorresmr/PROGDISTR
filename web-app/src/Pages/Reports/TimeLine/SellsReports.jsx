@@ -38,6 +38,9 @@ const SellsReports = () => {
       });
       setSells(sellCharge);
     } catch (error) {
+      if (error.response.status === 401) {
+        alert("Error de token");
+      }
       enqueueSnackbar(error.message, {
         anchorOrigin: { vertical: "top", horizontal: "right" },
         variant: "error",

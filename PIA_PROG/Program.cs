@@ -53,6 +53,7 @@ builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IMethodRepository, MethodRepository>();
 builder.Services.AddScoped<ISellRepository, SellRepository>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

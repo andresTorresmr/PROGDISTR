@@ -21,6 +21,7 @@ import DeleteProductModal from "./Modals/DeleteProductModal";
 import SearchIcon from "@mui/icons-material/Search";
 import { setProductState } from "../../redux/states/product.state";
 import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -39,6 +40,7 @@ const Products = () => {
   const [search, setSearch] = useState("");
   const [brands, setBrands] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleCharge();
@@ -69,8 +71,10 @@ const Products = () => {
 
       setBrands(brands);
     } catch (error) {
-      console.log(error.response.data);
-      enqueueSnackbar(error.response.data.error, {
+      if (error.response != 200) {
+        navigate("/login", { replace: true });
+      }
+      enqueueSnackbar(error.message, {
         anchorOrigin: { vertical: "top", horizontal: "right" },
         variant: "error",
         autoHideDuration: 2000,
@@ -97,6 +101,7 @@ const Products = () => {
     //console.log(products_item);
     setSearch(e.target.value);
     filter(e.target.value);
+
     //console//.log(product_search);
   };
   const filter = (searchTerm) => {

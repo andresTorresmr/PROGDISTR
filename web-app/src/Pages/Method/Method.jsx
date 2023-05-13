@@ -22,6 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { setProductState } from "../../redux/states/product.state";
 import { setMethodState } from "../../redux/states/method.state";
 import UpdateMethodModal from "./Modals/UpdateMethodModal";
+import { useNavigate } from "react-router-dom";
 
 const Method = () => {
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -33,6 +34,7 @@ const Method = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [methodValue, setMethodValue] = React.useState("");
   const method_items = useSelector((state) => state.methods);
+  const navigate = useNavigate();
   const [method_search, setMethodSearch] = useState(
     useSelector((state) => state.methods)
   );
@@ -57,11 +59,10 @@ const Method = () => {
       });
 
       dispatch(setMethodState(methods));
-      console.log(method_items);
-      //   setMethodSearch(methods);
-      //   setProductTable(methods);
     } catch (error) {
-      console.log(error);
+      if (error.response != 200) {
+        navigate("/login", { replace: true });
+      }
     }
   };
 

@@ -3,3 +3,4 @@ export * from "./product.service";
 export * from "./method.service";
 export * from "./sell.service";
 export * from "./report.service";
+export * from "./login.service";
