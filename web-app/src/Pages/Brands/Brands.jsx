@@ -73,7 +73,6 @@ const Brands = () => {
     };
     setbrand(data);
     setBrand_status(status);
-    //console.log(status);
     setOpenUpdate(true);
   };
 
@@ -83,12 +82,9 @@ const Brands = () => {
   };
 
   const handleChange = (e) => {
-    //console.log(e.target.value);
     setSearch(e.target.value);
 
     filter(e.target.value);
-
-    //console.log(brand_search);
   };
   const filter = (searchTerm) => {
     var searchResult = brandTable.filter((element) => {

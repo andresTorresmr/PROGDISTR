@@ -75,16 +75,13 @@ const Method = () => {
   };
 
   const handleDelete = async (id) => {
-    // console.log(id);
     setId(id);
     setOpenDelete(true);
   };
 
   const handleChange = (e) => {
-    //console.log(products_item);
     setSearch(e.target.value);
     filter(e.target.value);
-    //console//.log(product_search);
   };
   const filter = (searchTerm) => {
     var searchResult = methodTable.filter((element) => {

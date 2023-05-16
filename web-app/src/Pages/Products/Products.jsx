@@ -71,7 +71,7 @@ const Products = () => {
 
       setBrands(brands);
     } catch (error) {
-      if (error.response.status != 200) {
+      if (error.response.status == 401) {
         navigate("/login", { replace: true });
       }
       enqueueSnackbar(error.message, {
@@ -92,17 +92,13 @@ const Products = () => {
   };
 
   const handleDelete = async (id) => {
-    // console.log(id);
     setId(id);
     setOpenDelete(true);
   };
 
   const handleChange = (e) => {
-    //console.log(products_item);
     setSearch(e.target.value);
     filter(e.target.value);
-
-    //console//.log(product_search);
   };
   const filter = (searchTerm) => {
     var searchResult = productTable.filter((element) => {

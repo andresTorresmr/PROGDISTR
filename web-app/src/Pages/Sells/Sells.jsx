@@ -104,7 +104,6 @@ const Sells = () => {
         status: product.status,
       };
 
-      console.log(item);
       dispatch(updateProduct(product));
       dispatch(deleteSellItem(item.id));
       //setTableValue(quantity.current.value);
@@ -301,7 +300,6 @@ const Sells = () => {
       let stock = pStock;
 
       if (numberValidation(maxquantity)) {
-        // console.log(datavalidation);
         if (maxquantity > stock) {
           maxquantity = stock;
           enqueueSnackbar(

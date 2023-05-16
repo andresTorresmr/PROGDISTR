@@ -41,7 +41,6 @@ const AddProductModal = ({ open, setOpen, brands }) => {
       status: 1,
     };
     try {
-      // console.log(product_data);
       const { data } = await callEndpoint(insert_product(product_data));
       dispatch(setProduct(productAdapter(data[0])));
 

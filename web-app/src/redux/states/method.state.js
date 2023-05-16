@@ -11,7 +11,6 @@ export const userSlice = createSlice({
     },
 
     setMethodState: (state, action) => {
-      console.log(action.payload);
       return action.payload;
     },
     deleteMethod: (state, action) => {

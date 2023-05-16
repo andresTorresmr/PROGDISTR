@@ -48,19 +48,13 @@ const navLinks = [
   },
   {
     title: "Cerrar sesión",
-    path: "login",
+    path: "logout",
     icon: <LogoutIcon />,
   },
 ];
 
 function App() {
   const [open, setOpen] = useState(false);
-  const [openNested, setOpenNested] = useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
   return (
     <>
       <AppBar className="bg-slate-700">

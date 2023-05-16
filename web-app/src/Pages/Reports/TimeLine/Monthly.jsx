@@ -110,7 +110,6 @@ const Monthly = () => {
 
   const handleChange = (event) => {
     setMonth(event.target.value);
-    console.log(event.target);
     handleCharge(event.target.value);
   };
 

@@ -24,12 +24,17 @@ import Method from "./Pages/Method/Method";
 import Sells from "./Pages/Sells/Sells";
 import Reports from "./Pages/Reports/Reports";
 import Login from "./Pages/Login/Login";
+import Logout from "./Pages/Logout/Logout";
 import { Protected } from "./utilities";
 
 const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
   {
     path: "/",

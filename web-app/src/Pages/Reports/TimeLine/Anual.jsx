@@ -47,7 +47,6 @@ const Anual = () => {
     let chartLabels = [];
     let chartDataSet = [];
     const { data } = await callEndpoint(anual_report_service());
-    console.log(data);
     for (let month of data) {
       chartLabels.push(month.month);
       chartDataSet.push(month.total);
@@ -62,13 +61,11 @@ const Anual = () => {
         },
       ],
     };
-    console.log(chartRender);
     setDataSet(chartRender);
   };
 
   useEffect(() => {
     handleCharge();
-    console.log();
   }, []);
 
   return (

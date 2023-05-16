@@ -36,7 +36,6 @@ const AddMethodModal = ({ open, setOpen, brands }) => {
       name: name.current.value,
     };
     try {
-      // console.log(product_data);
       const { data } = await callEndpoint(insert_method(method_data));
       dispatch(setMethod(methodAdapter(data[0])));
 

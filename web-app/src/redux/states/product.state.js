@@ -7,7 +7,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setProduct: (state, action) => {
-      console.log(action.payload);
       return [...state, { ...action.payload }];
     },
 
@@ -26,7 +25,6 @@ export const userSlice = createSlice({
       const findProduct = state.find(
         (Product) => Product.id === action.payload.id
       );
-      console.log(action.payload.id);
       if (findProduct) {
         let index = state.indexOf(findProduct);
 

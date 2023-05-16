@@ -24,7 +24,6 @@ const DetailsModal = () => {
 
   const handleCharge = async () => {
     const { data } = await callEndpoint(get_sell_details(70));
-    console.log(sellDetailsAdapter(data));
     setProduct(sellDetailsAdapter(data));
   };
 

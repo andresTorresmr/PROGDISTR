@@ -49,8 +49,8 @@ namespace PIA_PROG.data.Repositories
             var sql =@"CALL INSERT_SELL(@dataP, @idMethodP, @totalP, @paysP, @changeP)";
             try
             {
-                var accountSid = "ACa68d688c174aa27cf5fcd11b14b0c2f2";
-                var authToken = "c0862bd528daf3f7b7b1bb24477ef8c6";
+                var accountSid = " ";
+                var authToken = " ";
                 TwilioClient.Init(accountSid, authToken);
 
                 var messageOptions = new CreateMessageOptions(

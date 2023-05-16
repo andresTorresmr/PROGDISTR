@@ -52,8 +52,6 @@ const Login = () => {
       });
     }
   };
-  // const { data } = callEndpoint(login_service(data));
-  // console.log(data);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {

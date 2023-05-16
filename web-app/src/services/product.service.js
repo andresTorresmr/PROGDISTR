@@ -36,7 +36,6 @@ export const update_product = (data, id) => {
 };
 
 export const delete_product = (id) => {
-  console.log(id);
   const controller = loadAbort();
 
   return {

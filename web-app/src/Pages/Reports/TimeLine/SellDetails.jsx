@@ -40,13 +40,11 @@ const SellDetails = ({ open, setOpen, id = 70 }) => {
 
   const handleCharge = async () => {
     const { data } = await callEndpoint(get_sell_details(id));
-    console.log(sellDetailsAdapter(data));
     setProduct(sellDetailsAdapter(data));
   };
 
   useEffect(() => {
     handleCharge();
-    console.log(id);
   }, [id]);
 
   return (
