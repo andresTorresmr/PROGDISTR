@@ -71,7 +71,7 @@ const Products = () => {
 
       setBrands(brands);
     } catch (error) {
-      if (error.response != 200) {
+      if (error.response.status != 200) {
         navigate("/login", { replace: true });
       }
       enqueueSnackbar(error.message, {

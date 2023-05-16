@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PIA_PROG.data.Repositories;
 using PIA_PROG.model;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
 
 namespace PIA_PROG.Controllers
 {
@@ -52,8 +56,27 @@ namespace PIA_PROG.Controllers
                 var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
 
                 string createdToken = tokenHandler.WriteToken(tokenConfig);
+                try
+                {
+                    var accountSid = "ACa68d688c174aa27cf5fcd11b14b0c2f2";
+                    var authToken = "c0862bd528daf3f7b7b1bb24477ef8c6";
+                    TwilioClient.Init(accountSid, authToken);
 
-                return StatusCode(StatusCodes.Status200OK, new { access_token = createdToken });
+                    var messageOptions = new CreateMessageOptions(
+                      new PhoneNumber("+528123564669"));
+                    messageOptions.From = new PhoneNumber("+12543213596");
+                    messageOptions.Body = "Iniciaste sesión con tu cuenta";
+
+
+                    var message = MessageResource.Create(messageOptions);
+
+                    return StatusCode(StatusCodes.Status200OK, new { access_token = createdToken });
+                }
+                catch
+                {
+                    return StatusCode(StatusCodes.Status200OK, new { access_token = createdToken });
+                }
+                
             }
             else
             {

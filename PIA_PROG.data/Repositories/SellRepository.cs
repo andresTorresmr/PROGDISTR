@@ -2,6 +2,9 @@
 using Dapper;
 using MySql.Data.MySqlClient;
 using PIA_PROG.model;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace PIA_PROG.data.Repositories
 {
@@ -21,6 +24,7 @@ namespace PIA_PROG.data.Repositories
             return new MySqlConnection(_connectionString.ConnectionString);
         }
 
+      
         
         public async Task<IEnumerable<Sell>> GetDetails()
         {
@@ -43,7 +47,27 @@ namespace PIA_PROG.data.Repositories
             var db = dbConnection();
          
             var sql =@"CALL INSERT_SELL(@dataP, @idMethodP, @totalP, @paysP, @changeP)";
-            return await db.QueryAsync<Sell>(sql, new { dataP = sell.data, idMethodP = sell.idMethod, totalP = sell.total, paysP = sell.pays, changeP = sell.change });
+            try
+            {
+                var accountSid = "ACa68d688c174aa27cf5fcd11b14b0c2f2";
+                var authToken = "c0862bd528daf3f7b7b1bb24477ef8c6";
+                TwilioClient.Init(accountSid, authToken);
+
+                var messageOptions = new CreateMessageOptions(
+                  new PhoneNumber("+528123564669"));
+                messageOptions.From = new PhoneNumber("+12543213596");
+                messageOptions.Body = "Registraste una venta por $"+sell.total.ToString();
+
+
+                var message = MessageResource.Create(messageOptions);
+                
+                return await db.QueryAsync<Sell>(sql, new { dataP = sell.data, idMethodP = sell.idMethod, totalP = sell.total, paysP = sell.pays, changeP = sell.change });
+            }
+            catch
+            {
+                return await db.QueryAsync<Sell>(sql, new { dataP = sell.data, idMethodP = sell.idMethod, totalP = sell.total, paysP = sell.pays, changeP = sell.change });
+            }
+            
         }
 
         public async Task<IEnumerable<Sell>> GetAllSells()
